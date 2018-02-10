@@ -338,26 +338,52 @@ int main(void)
 		if(Seconds == 0)
 		{
 			
-			if (onebit == 0x00)
+//			if (onebit == 0x00)
+//			{
+//				onebit = 0x80;
+//				numbute++;
+//				duty_mode_data[numbute-1] = 0x00;
+//			}
+//			else
+//				onebit >>=  1;
+//			
+//			if (numbute == 7)
+//				numbute = numbute + 2;
+//			
+//			if (numbute == 16)
+//				numbute = 0;
+//			
+//			duty_mode_data[numbute] = onebit;
+			
+			
+			
+			if (onebit == 0xFF)
 			{
 				onebit = 0x80;
 				numbute++;
-				duty_mode_data[numbute-1] = 0x00;
 			}
 			else
-				onebit >>=  1;
-			
-			if (numbute == 7)
-				numbute = numbute + 2;
-			
+			{
+				onebit >>=  1;	
+				onebit |= (1 << 7);
+			}
+
 			if (numbute == 16)
-				numbute = 0;
+			{
+				while(numbute)
+				{
+					duty_mode_data[numbute-1] = 0x00;
+					numbute--;
+				}
+			}
+			
 			
 			duty_mode_data[numbute] = onebit;
+			
 
 			LCD_Driver_send_duty();
 			
-			Seconds = 2;
+			Seconds = 5;
 
 		}
 	}
